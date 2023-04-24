@@ -5,7 +5,6 @@ import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 import { AntDesign } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
 
 export default function Home() {
   const MainTab = createBottomTabNavigator();
@@ -18,8 +17,9 @@ export default function Home() {
               name="logout"
               size={30}
               color={color}
-              marginTop={50}
-              marginLeft={350}
+              marginTop={35}
+              marginLeft={335}
+              marginBottom={15}
             />
           ),
           tabBarIcon: ({ focused, color, size }) => (

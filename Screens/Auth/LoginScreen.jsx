@@ -8,7 +8,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useState } from "react";
-import * as Font from "expo-font";
+// import * as Font from "expo-font";
 
 const initialState = {
   email: "",
@@ -16,8 +16,6 @@ const initialState = {
 };
 
 export default function LoginScreen({ navigation }) {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
