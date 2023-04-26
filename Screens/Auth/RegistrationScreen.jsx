@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useState } from "react";
-import * as Font from "expo-font";
+// import * as Font from "expo-font";
 
 const initialState = {
   login: "",
@@ -18,9 +18,6 @@ const initialState = {
 };
 
 export default function RegistrationScreen({ navigation }) {
-  // const [login, setLogin] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
@@ -102,7 +99,6 @@ export default function RegistrationScreen({ navigation }) {
           <Text style={{ color: "#070808" }}>Уже есть аккаунт?</Text> Войти
         </Text>
       </TouchableOpacity>
-      {/* <Button title="" onPress={onRegister} /> */}
     </View>
   );
 }
@@ -131,6 +127,7 @@ const styles = StyleSheet.create({
   },
   btnText: {},
   form: {
+    marginTop: 100,
     width: "100%",
     alignItems: "center",
     backgroundColor: "#fff",

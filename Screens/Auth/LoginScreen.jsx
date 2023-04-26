@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   },
   btnText: {},
   form: {
+    marginTop: 100,
     width: "100%",
     // top: -120,
     alignItems: "center",
