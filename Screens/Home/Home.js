@@ -12,16 +12,7 @@ export default function Home() {
     <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
         options={{
-          header: ({ focused, color, size }) => (
-            <AntDesign
-              name="logout"
-              size={30}
-              color={color}
-              marginTop={35}
-              marginLeft={335}
-              marginBottom={15}
-            />
-          ),
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => (
             <AntDesign name="appstore-o" size={size} color={color} />
           ),

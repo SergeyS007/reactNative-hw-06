@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -13,6 +14,10 @@ import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage, database } from "../../firebase/config";
+// import { ref as refDb, set, push } from "firebase/database";
+import { collection, addDoc } from "firebase/firestore";
 
 const initialState = {
   title: "",
@@ -28,6 +33,8 @@ export default function CreatePostsScreen({ navigation }) {
 
   const { title, locate } = state;
 
+  const { userId, nickName } = useSelector((state) => state.auth);
+
   const titleHandler = (text) =>
     setState((prevState) => ({ ...prevState, title: text }));
   const locationHandler = (text) =>
@@ -35,19 +42,64 @@ export default function CreatePostsScreen({ navigation }) {
 
   const makephoto = async () => {
     const foto = await camera.takePictureAsync();
+    const locationPhoto = await Location.getCurrentPositionAsync();
+    setLocation(locationPhoto);
     setPhoto(foto.uri);
     console.log(photo);
   };
 
   const sendphoto = () => {
     if (photo) {
-      navigation.navigate("PostsScreen", { photo, title, locate });
-    } else console.log("fffffffffffffffffffffffffffffff");
+      uploadPostToServer();
+      navigation.navigate("DefaultScreen", { photo, title, locate });
+    } else console.log("ffffff");
+  };
+
+  const uploadPhotoToServer = async () => {
+    try {
+      const response = await fetch(photo);
+
+      console.log("response", response);
+      const file = await response.blob();
+      console.log("file", file);
+
+      const uniquePostId = Date.now().toString();
+      const storageRef = await ref(storage, `postImage/${uniquePostId}`);
+      console.log("storageRef", storageRef);
+
+      // 'file' comes from the Blob or File API
+      await uploadBytes(storageRef, file);
+      const processedPhoto = await getDownloadURL(
+        ref(storage, `postImage/${uniquePostId}`)
+      );
+      console.log("processedPhoto", processedPhoto);
+
+      return processedPhoto;
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
+  const uploadPostToServer = async () => {
+    try {
+      const photo = await uploadPhotoToServer();
+
+      const docRef = await addDoc(collection(database, "posts"), {
+        photo,
+        title,
+        location: location.coords,
+        locate,
+        userId,
+        nickName,
+      });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         console.log("Permission to access location was denied");
       }
